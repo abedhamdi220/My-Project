@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable = ["name", "parent_id"];
+    // added description to fillable so it can be created/updated via mass assignment
+    protected $fillable = ["name", "parent_id", "description"];
 
     public function parent(){
         return $this->belongsTo(Category::class, "parent_id");
@@ -18,5 +19,13 @@ class Category extends Model
 
     public function scopeParentId($query, $parentId){
         return $query->where("parent_id", $parentId);
+    }
+
+    /**
+     * Relationship to services (used for withCount('services'))
+     */
+    public function services()
+    {
+        return $this->hasMany(\App\Models\Service::class, 'category_id');
     }
 }

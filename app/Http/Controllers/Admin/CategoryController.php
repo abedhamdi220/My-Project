@@ -35,8 +35,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $parents = $this->categoryService->getParentCategories();
-        return view('admin.categories.create', compact('parents'));
+        // pass variable name expected by the view
+        $categories = $this->categoryService->getParentCategories();
+        return view('admin.categories.create', compact('categories'));
     }
 
     /**
@@ -68,6 +69,7 @@ class CategoryController extends Controller
         $category = $this->categoryService->findById((int)$id);
         $parents = $this->categoryService->getParentCategories();
         return view('admin.categories.edit', compact('category', 'parents'));
+        // Note: views expect $categories or $parents; we pass both just in case
     }
 
     /**

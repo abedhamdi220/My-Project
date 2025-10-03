@@ -36,8 +36,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-// Admin services routes
-Route::prefix('admin')->name('admin.')->group(function() {
+// Admin services routes (kept for backwards compatibility) — NOW protected
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function() {
     Route::get('services', [ServiceController::class, 'index'])->name('services.index');
     Route::get('services/{id}', [ServiceController::class, 'show'])->name('services.show');
     Route::post('services/{id}/status', [ServiceController::class, 'updateStatus'])->name('services.updateStatus');

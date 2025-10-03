@@ -11,15 +11,14 @@ use Illuminate\Support\Str;
 class CategoryService
 {
     /**
-     * Get all categories without pagination
+     * Get all categories without pagination (include counts and parent)
      *
      * @return Collection
      */
     public function getAllCategoriesList(): Collection
     {
-        $categories = Category::withCount("children")->get();
-        return $categories;
-   
+        // include counts so views like show/index can use services_count and children_count
+        return Category::with('parent')->withCount(['children', 'services'])->get();
     }
 
     /**
@@ -33,14 +32,16 @@ class CategoryService
     }
 
     /**
-     * Get category by ID with relationships
+     * Get category by ID with relationships and counts
      *
      * @param int $id
      * @return Category
      */
     public function findById(int $id): Category
     {
-        return Category::with(['parent', 'children'])->findOrFail($id);
+        return Category::with(['parent', 'children'])
+                       ->withCount(['children', 'services'])
+                       ->findOrFail($id);
     }
 
     /**
@@ -51,8 +52,8 @@ class CategoryService
      */
     public function create(array $data): Category
     {
-        // Allow passing parent_id as null or integer
-        $payload = Arr::only($data, ['name', 'parent_id']);
+        // Allow passing parent_id as null or integer and include description
+        $payload = Arr::only($data, ['name', 'parent_id', 'description']);
         return Category::create($payload);
     }
 
@@ -66,7 +67,7 @@ class CategoryService
     public function update(int $id, array $data): Category
     {
         $category = Category::findOrFail($id);
-        $payload = Arr::only($data, ['name', 'parent_id']);
+        $payload = Arr::only($data, ['name', 'parent_id', 'description']);
         $category->update($payload);
         return $category;
     }
@@ -105,6 +106,15 @@ class CategoryService
     }
 
     /**
+     * Get categories for API with ordering, filtering, and search
+     *
+     * @param array $params
+     * @return LengthAwarePaginator
+    
+
+
+
+    
      * Get categories for API with ordering, filtering, and search
      *
      * @param array $params
