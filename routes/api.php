@@ -18,7 +18,7 @@ Route::prefix("client")->group(function () {
         Route::prefix("categories")->group(function () {
             Route::get("/", [CategoryController::class, "apiIndex"]);
         });
-        
+
         // Services for Clients
         Route::prefix("services")->group(function () {
             Route::get("/", [ClientServiceController::class, "index"]);
@@ -35,19 +35,22 @@ Route::prefix("provider")->group(function () {
     Route::post("login", [ProviderAuthController::class, "login"]);
     Route::middleware("auth:api")->group(function () {
         Route::get("profile", [ProviderAuthController::class, "profile"]);
-        
+
         // Categories for Providers
         Route::prefix("categories")->group(function () {
             Route::get("/", [CategoryController::class, "apiIndex"]);
         });
-        
-        // Services for Providers
-        Route::prefix("services")->group(function () {
-             Route::post("/", [ProviderServiceController::class, "store"]);
-            Route::get("/", [ProviderServiceController::class, "index"]);
-            Route::get("/{id}", [ProviderServiceController::class, "show"]);
-            Route::put("/{id}", [ProviderServiceController::class, "update"]);
-            Route::delete("/{id}", [ProviderServiceController::class, "destroy"]);
+    
+            Route::apiResource('services', ProviderServiceController::class);
         });
+
+        // Services for Providers
+        // Route::prefix("services")->group(function () {
+        //      Route::post("/", [ProviderServiceController::class, "store"]);
+        //     Route::get("/", [ProvidrviceControlerSeler::class, "index"]);
+        //     Route::get("/{id}", [ProviderServiceController::class, "show"]);
+        //     Route::put("/{id}", [ProviderServiceController::class, "update"]);
+        //     Route::delete("/{id}", [ProviderServiceController::class, "destroy"]);
+        // });
     });
-});
+

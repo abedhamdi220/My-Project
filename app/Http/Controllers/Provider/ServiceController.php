@@ -35,16 +35,14 @@ class ServiceController extends Controller
     public function store(ServiceStoreRequest $request)
     {
         $providerId = Auth::id();
-        $data = array_merge($request->validated(), ['provider_id' => $providerId]);
+    $data = array_merge($request->validated(), ['provider_id' => $providerId]);
 
-    
-        DB::transaction(function () use ($data) {
-            $service = app(ServiceService::class)->createService($data);
-        });
+    $service = DB::transaction(function () use ($data) {
+        return app(ServiceService::class)->createService($data);
+    });
 
-        return $this->success(new ServiceResource($data), 'Service created successfully.', 201);
+    return $this->success(new ServiceResource($service), 'Service created successfully.', 201);
     }
-
     /**
      * Show single service (API) - provider's own
      */
