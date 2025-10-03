@@ -9,11 +9,7 @@ use Illuminate\Support\Arr;
 
 class ServiceService
 {
-    /**
-     * Get all services without pagination
-     *
-     * @return Collection
-     */
+    
     public function getAllServicesList(): Collection
     {
         return Service::with(['provider','category'])->get();

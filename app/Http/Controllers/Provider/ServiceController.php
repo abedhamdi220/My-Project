@@ -19,9 +19,7 @@ class ServiceController extends Controller
         $this->serviceService = $serviceService;
     }
 
-    /**
-     * List provider's services (API)
-     */
+ 
     public function index(Request $request)
     {
         $providerId = Auth::id();
@@ -29,9 +27,7 @@ class ServiceController extends Controller
         return $this->success(['data' => ServiceResource::collection($services)], 'Services retrieved successfully.');
     }
 
-    /**
-     * Store a new service (API)
-     */
+   
     public function store(ServiceStoreRequest $request)
     {
     $providerId = Auth::id();
@@ -43,9 +39,7 @@ class ServiceController extends Controller
 
         return $this->success(new ServiceResource($service), 'Service created successfully.', 201);
     }
-    /**
-     * Show single service (API) - provider's own
-     */
+    
     public function show($id)
     {
         $providerId = Auth::id();
@@ -53,9 +47,7 @@ class ServiceController extends Controller
         return $this->success(new ServiceResource($service), 'Service retrieved successfully.');
     }
 
-    /**
-     * Update service (API)
-     */
+   
     public function update(ServiceStoreRequest $request, $id)
     {
   $providerId = Auth::id();
@@ -68,9 +60,7 @@ class ServiceController extends Controller
         return $this->success(new ServiceResource($service), 'Service updated successfully.');
     }
 
-    /**
-     * Delete service (API)
-     */
+    
     public function destroy($id)
     {
     $providerId = Auth::id();

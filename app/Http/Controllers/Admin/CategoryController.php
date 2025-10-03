@@ -19,30 +19,23 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    /**
-     * Display a listing of categories (Web Route)
-     */
     public function index(Request $request)
     {
-        // use dependency injected service to fetch paginated categories
+      
         $categories = $this->categoryService->getAllCategoriesList();
 
         return view('admin.categories.index', compact('categories'));
     }
 
-    /**
-     * Show the form for creating a new category (Web Route)
-     */
+    
     public function create()
     {
-        // pass variable name expected by the view
+
         $categories = $this->categoryService->getParentCategories();
         return view('admin.categories.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created category (Web Route)
-     */
+   
     public function store(CategoryStoreRequest $request)
     {
         DB::transaction(function () use ($request) {
@@ -52,29 +45,23 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
 
-    /**
-     * Display the specified category (Web Route)
-     */
+  
     public function show($id)
     {
         $category = $this->categoryService->findById((int)$id);
         return view('admin.categories.show', compact('category'));
     }
 
-    /**
-     * Show the form for editing the specified category (Web Route)
-     */
+    
     public function edit($id)
     {
         $category = $this->categoryService->findById((int)$id);
         $parents = $this->categoryService->getParentCategories();
         return view('admin.categories.edit', compact('category', 'parents'));
-        // Note: views expect $categories or $parents; we pass both just in case
+
     }
 
-    /**
-     * Update the specified category (Web Route)
-     */
+  
     public function update(CategoryUpdateRequest $request, $id)
     {
         DB::transaction(function () use ($request, $id) {
@@ -84,12 +71,9 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
-    /**
-     * Remove the specified category (Web Route)
-     */
     public function destroy($id)
     {
-        // prevent deleting if has children
+       
         if ($this->categoryService->hasChildren((int)$id)) {
             return redirect()->route('categories.index')->with('error', 'Cannot delete category that has child categories.');
         }

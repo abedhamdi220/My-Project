@@ -10,33 +10,23 @@ use Illuminate\Support\Str;
 
 class CategoryService
 {
-    /**
-     * Get all categories without pagination (include counts and parent)
-     *
-     * @return Collection
-     */
+  
     public function getAllCategoriesList(): Collection
     {
-        // include counts so views like show/index can use services_count and children_count
+       
         return Category::with('parent')->withCount(['children', 'services'])->get();
     }
 
-    /**
-     * Get all categories with parent relation
-     *
-     * @return Collection
-     */
+
+     
+
+     
     public function getAllCategoriesWithParent(): Collection
     {
         return Category::with('parent')->get();
     }
 
-    /**
-     * Get category by ID with relationships and counts
-     *
-     * @param int $id
-     * @return Category
-     */
+  
     public function findById(int $id): Category
     {
         return Category::with(['parent', 'children'])
@@ -44,12 +34,6 @@ class CategoryService
                        ->findOrFail($id);
     }
 
-    /**
-     * Create a new category
-     *
-     * @param array $data
-     * @return Category
-     */
     public function create(array $data): Category
     {
         // Allow passing parent_id as null or integer and include description
@@ -57,13 +41,7 @@ class CategoryService
         return Category::create($payload);
     }
 
-    /**
-     * Update an existing category
-     *
-     * @param int $id
-     * @param array $data
-     * @return Category
-     */
+  
     public function update(int $id, array $data): Category
     {
         $category = Category::findOrFail($id);
@@ -72,34 +50,19 @@ class CategoryService
         return $category;
     }
 
-    /**
-     * Delete a category
-     *
-     * @param int $id
-     * @return bool
-     */
     public function delete(int $id): bool
     {
         $category = Category::findOrFail($id);
         return (bool) $category->delete();
     }
 
-    /**
-     * Get parent categories (categories without parent)
-     *
-     * @return Collection
-     */
+  
     public function getParentCategories(): Collection
     {
         return Category::whereNull('parent_id')->get();
     }
 
-    /**
-     * Check if category has children
-     *
-     * @param int $id
-     * @return bool
-     */
+    
     public function hasChildren(int $id): bool
     {
         return Category::where('parent_id', $id)->exists();

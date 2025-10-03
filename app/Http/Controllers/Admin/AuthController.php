@@ -31,7 +31,6 @@ class AuthController extends Controller
 
     public function logout(){
         Auth::logout();
-        // redirect to login page (not to home which is protected)
         return redirect()->route('login');
     }
 }
