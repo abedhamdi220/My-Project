@@ -39,8 +39,8 @@ class ServiceService
      */
     public function createService(array $data): Service
     {
-        $payload = Arr::only($data, ['name','description','price','provider_id','category_id','status']);
-        return Service::create($payload);
+
+       return Service::create($data);
     }
 
     /**
@@ -49,8 +49,7 @@ class ServiceService
     public function updateService(int $id, array $data, int $providerId): Service
     {
         $service = $this->findByIdForProvider($id, $providerId);
-        $payload = Arr::only($data, ['name','description','price','category_id','status']);
-        $service->update($payload);
+        $service->update($data);
         return $service;
     }
 

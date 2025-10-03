@@ -34,14 +34,14 @@ class ServiceController extends Controller
      */
     public function store(ServiceStoreRequest $request)
     {
-        $providerId = Auth::id();
-    $data = array_merge($request->validated(), ['provider_id' => $providerId]);
+    $providerId = Auth::id();
+        $data = array_merge($request->validated(), ['provider_id' => $providerId]);
 
-    $service = DB::transaction(function () use ($data) {
-        return app(ServiceService::class)->createService($data);
-    });
+        $service = DB::transaction(function () use ($data) {
+            return $this->serviceService->createService($data);
+        });
 
-    return $this->success(new ServiceResource($service), 'Service created successfully.', 201);
+        return $this->success(new ServiceResource($service), 'Service created successfully.', 201);
     }
     /**
      * Show single service (API) - provider's own
@@ -58,11 +58,13 @@ class ServiceController extends Controller
      */
     public function update(ServiceStoreRequest $request, $id)
     {
-        $providerId = Auth::id();
+  $providerId = Auth::id();
         $service = null;
+
         DB::transaction(function () use (&$service, $id, $request, $providerId) {
-            $service = app(ServiceService::class)->updateService((int)$id, $request->validated(), $providerId);
+            $service = $this->serviceService->updateService((int)$id, $request->validated(), $providerId);
         });
+
         return $this->success(new ServiceResource($service), 'Service updated successfully.');
     }
 
@@ -71,10 +73,12 @@ class ServiceController extends Controller
      */
     public function destroy($id)
     {
-        $providerId = Auth::id();
+    $providerId = Auth::id();
+
         DB::transaction(function () use ($id, $providerId) {
-            app(ServiceService::class)->deleteService((int)$id, $providerId);
+            $this->serviceService->deleteService((int)$id, $providerId);
         });
+
         return $this->success(null, 'Service deleted successfully.');
     }
 
