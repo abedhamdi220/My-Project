@@ -56,5 +56,6 @@ class ServiceService
     {
         return Service::with(['provider','category'])->where('status','active')->findOrFail($id);
     }
+   
 
 }

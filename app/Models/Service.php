@@ -22,7 +22,13 @@ class Service extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class);
+    }
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
+    public function favoritesBy(){
+        return $this->belongsToMany(User::class,'favorites','service_id','user_id');
     }
 
     public function scopeActive($query)

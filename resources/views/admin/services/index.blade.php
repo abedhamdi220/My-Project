@@ -43,6 +43,7 @@
                                     <td>
                                         <form method="POST" action="{{ route('admin.services.updateStatus', $service->id) }}">
                                             @csrf
+                                            
                                             <select name="status" onchange="this.form.submit()" class="form-select form-select-sm">
                                                 <option value="active" {{ $service->status === 'active' ? 'selected' : '' }}>Active</option>
                                                 <option value="inactive" {{ $service->status === 'inactive' ? 'selected' : '' }}>Inactive</option>

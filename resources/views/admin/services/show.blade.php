@@ -17,21 +17,48 @@
                 </div>
                 <div class="card-body">
                     @if(isset($service))
-                        <table class="table table-bordered table-responsive">
-                            <tbody>
-                                <tr><th>ID</th><td>{{ $service->id }}</td></tr>
-                                <tr><th>Name</th><td>{{ $service->name }}</td></tr>
-                                <tr><th>Description</th><td>{{ $service->description }}</td></tr>
-                                <tr><th>Provider</th><td>{{ optional($service->provider)->name }}</td></tr>
-                                <tr><th>Category</th><td>{{ optional($service->category)->name }}</td></tr>
-                                <tr><th>Price</th><td>{{ $service->price }}</td></tr>
-                                <tr><th>Status</th><td>{{ $service->status }}</td></tr>
-                                <tr><th>Created At</th><td>{{ $service->created_at }}</td></tr>
-                                <tr><th>Updated At</th><td>{{ $service->updated_at }}</td></tr>
-                            </tbody>
-                        </table>
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                            <tr>
+                                <th>ID</th>
+                                <td>{{ $service->id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ $service->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{ $service->description }}</td>
+                            </tr>
+                            <tr>
+                                <th>Provider</th>
+                                <td>{{ optional($service->provider)->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Category</th>
+                                <td>{{ optional($service->category)->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Price</th>
+                                <td>{{ $service->price }}</td>
+                            </tr>
+                            <tr>
+                                <th>Status</th>
+                                <td>{{ $service->status }}</td>
+                            </tr>
+                            <tr>
+                                <th>Created At</th>
+                                <td>{{ $service->created_at }}</td>
+                            </tr>
+                            <tr>
+                                <th>Updated At</th>
+                                <td>{{ $service->updated_at }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     @else
-                        <div class="alert alert-warning">Service not found.</div>
+                    <div class="alert alert-warning">Service not found.</div>
                     @endif
                 </div>
             </div>

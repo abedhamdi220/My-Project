@@ -35,6 +35,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
     /**
      * Get the attributes that should be cast.
      *
@@ -47,4 +48,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function services() {
+        return $this->hasMany(Service::class,'provider_id');
+    }
+        public function oreders() {
+            return $this->hasMany(Order::class,'Client_id');
+
+    }
+    public function favorites() {
+        return $this->belongsToMany(Service::class,'favorites','user_id','service_id');
+    }
+  
+ 
 }

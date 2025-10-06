@@ -44,4 +44,5 @@ class ServiceController extends Controller
         $services = $this->serviceService->getForClient($params);
         return $this->success(['data' => ServiceResource::collection($services)], 'Services retrieved successfully.');
     }
+    
 }

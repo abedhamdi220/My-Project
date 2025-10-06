@@ -83,25 +83,25 @@ class CategoryService
      * @param array $params
      * @return LengthAwarePaginator
      */
-    // public function getForApi(array $params = []): LengthAwarePaginator
-    // {
-    //     $perPage = isset($params['per_page']) ? (int)$params['per_page'] : 10;
-    //     $orderBy = $params['order_by'] ?? 'id';
-    //     $orderDirection = in_array(strtolower($params['order_direction'] ?? 'desc'), ['asc','desc']) ? $params['order_direction'] : 'desc';
+    public function getForApi(array $params = []): LengthAwarePaginator
+    {
+        $perPage = isset($params['per_page']) ? (int)$params['per_page'] : 10;
+        $orderBy = $params['order_by'] ?? 'id';
+        $orderDirection = in_array(strtolower($params['order_direction'] ?? 'desc'), ['asc','desc']) ? $params['order_direction'] : 'desc';
 
-    //     $query = Category::query()->with(['parent', 'children']);
+        $query = Category::query()->with(['parent', 'children']);
 
-    //     if (isset($params['parent_id']) && $params['parent_id'] !== '') {
-    //         $query->where('parent_id', $params['parent_id']);
-    //     }
+        if (isset($params['parent_id']) && $params['parent_id'] !== '') {
+            $query->where('parent_id', $params['parent_id']);
+        }
 
-    //     if (!empty($params['search'])) {
-    //         $q = $params['search'];
-    //         $query->where('name', 'like', "%{$q}%");
-    //     }
+        if (!empty($params['search'])) {
+            $q = $params['search'];
+            $query->where('name', 'like', "%{$q}%");
+        }
 
-    //     $query->orderBy($orderBy, $orderDirection);
+        $query->orderBy($orderBy, $orderDirection);
 
-    //     return $query->paginate($perPage);
-    // }
+        return $query->paginate($perPage);
+    }
 }

@@ -24,8 +24,9 @@
         href="{{ route('admin.services.index') }}" >
             <i class="bi bi-file-text me-2"></i>Services
         </a>
-        <a class="nav-link mb-1 text-dark" href="#" onclick="alert('Settings coming soon!')">
-            <i class="bi bi-gear me-2"></i>Settings
+        <a class="nav-link mb-1 text-dark {{ request()->routeIs('Orders.*') ? 'active bg-primary text-white' : 'text-dark' }}"
+        href="{{ route("orders.index") }}" >
+            <i class="bi bi-gear me-2"></i>Orders List
         </a>
     </nav>
 

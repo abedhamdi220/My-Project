@@ -1,17 +1,20 @@
 <?php
 
-use App\Http\Controllers\Global\CategoryController;
-use App\Http\Controllers\Client\AuthController;
-use App\Http\Controllers\Client\ServiceController as ClientServiceController;
-use App\Http\Controllers\Provider\AuthController as ProviderAuthController;
-use App\Http\Controllers\Provider\ServiceController as ProviderServiceController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Client\AuthController;
+use App\Http\Controllers\Client\OrderController;
+use App\Http\Controllers\Client\FavoriteController;
+use App\Http\Controllers\Global\CategoryController;
+use App\Http\Controllers\Provider\AuthController as ProviderAuthController;
+use App\Http\Controllers\Client\ServiceController as ClientServiceController;
+use App\Http\Controllers\Provider\ServiceController as ProviderServiceController;
 
 
 // Client
 Route::prefix("client")->group(function () {
     Route::post("register", [AuthController::class, "register"]);
     Route::post("login", [AuthController::class, "login"]);
+
     Route::middleware("auth:api")->group(function () {
         Route::get("profile", [AuthController::class, "profile"]);
         // Categories for Clients
@@ -26,7 +29,17 @@ Route::prefix("client")->group(function () {
             Route::get("/category/{categoryId}", [ClientServiceController::class, "byCategory"]);
             Route::get("/provider/{providerId}", [ClientServiceController::class, "byProvider"]);
         });
+        Route::prefix("orders")->group(function () {
+            Route::post("/", [OrderController::class,"store"]);
+            Route::get("/", [OrderController::class,"index"]);
+
+        });
+          Route::prefix("favorites")->group(function () {
+            Route::get("/", [FavoriteController::class,"index"]);
+             Route::post("/", [FavoriteController::class,"store"]);
+              Route::delete("/{service_id}", [FavoriteController::class,"destroy"]);
     });
+});
 });
 
 // Provider
@@ -43,6 +56,9 @@ Route::prefix("provider")->group(function () {
     
             Route::apiResource('services', ProviderServiceController::class);
         });
+        Route::prefix('orders')->group(function () {
+            Route::get('/', [ProviderOrderController::class,'index']);
+        });
 
         // Services for Providers
         // Route::prefix("services")->group(function () {
@@ -54,3 +70,5 @@ Route::prefix("provider")->group(function () {
         // });
     });
 
+
+  
