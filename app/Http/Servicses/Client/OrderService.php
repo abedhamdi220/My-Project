@@ -36,16 +36,18 @@ class OrderService {
 
     }
     
-
- 
-    
-
    public function  getOrders(){
-       return Order::where("client_id",Auth::user()->id)->get();    
+       return Order::whith(['review','client','provider','service'])->where("client_id",Auth::user()->id)->latest()->get();    
 
     }
+    public function deleteOrder(order $order){
+        if($order->client_id !== Auth::user()->id){
+            throw new \Exception("error you cab only delete your order");
+
+    }
+    return $order->delete();
 }
 
-
+}
 
 

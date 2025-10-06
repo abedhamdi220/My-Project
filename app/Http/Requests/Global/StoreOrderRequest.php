@@ -25,7 +25,18 @@ class StoreOrderRequest extends FormRequest
         return [
            "note"=> "nullable|string|max:1000",
             "service_id" => "required|exists:services,id",
+           
             
         ];
     }
+        public function messages(): array
+        {
+            return[
+                "service_id.exists"=> "service not found",
+                "service_id.required"=> "service is required filed",
+                
+
+            ];
+        }
+    
 }

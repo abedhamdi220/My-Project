@@ -7,6 +7,7 @@ use App\Http\Controllers\Client\FavoriteController;
 use App\Http\Controllers\Global\CategoryController;
 use App\Http\Controllers\Provider\AuthController as ProviderAuthController;
 use App\Http\Controllers\Client\ServiceController as ClientServiceController;
+use App\Http\Controllers\Provider\OrderController as ProviderOrderController;
 use App\Http\Controllers\Provider\ServiceController as ProviderServiceController;
 
 
@@ -57,7 +58,8 @@ Route::prefix("provider")->group(function () {
             Route::apiResource('services', ProviderServiceController::class);
         });
         Route::prefix('orders')->group(function () {
-            Route::get('/', [ProviderOrderController::class,'index']);
+            Route::get('/', [OrderController::class,'index']);
+            Route::put('/change-status/{order}', [OrderController::class,'changeStatus']);
         });
 
         // Services for Providers

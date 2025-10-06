@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Provider;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Provider\UpdateStatusRequest;
 use App\Http\Servicses\Provider\OrderService;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -12,8 +14,6 @@ class OrderController extends Controller
     public function __construct(OrderService $service)
     {
         $this->orderService = $service;
-
-        
     }
 public function index()
 {
@@ -22,8 +22,19 @@ public function index()
 
    
 }
+
+
 public function getFilterDataForProviders(Request $request){
     $providers = $this->orderService->getForProvider();
     return $this->success(['data'=>$providers,'message'=> 'Orders for providers',],201);
+}
+
+
+
+
+
+public function changeStatus(Order $order,UpdateStatusRequest $request){
+   $status= $request->validated();
+    $this->orderService->changeStatusProvider($order, $status);
 }
 }
