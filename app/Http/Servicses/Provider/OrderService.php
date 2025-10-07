@@ -40,9 +40,12 @@ $providerId=Auth::user()->id;
 if($order->provider_id !== $providerId){
     throw new \Exception("Unauthorized you dont own this order");
 }
-$order->update(["status"=> $status,"updated_at"=>now()]);
 
+$order->status=$status;
+
+$order->save();
 
     }
+
 
 }

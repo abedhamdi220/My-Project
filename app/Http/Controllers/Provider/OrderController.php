@@ -15,26 +15,19 @@ class OrderController extends Controller
     {
         $this->orderService = $service;
     }
-public function index()
-{
-    $order=$this->orderService->getOrdersProvider();
-    return $this->success(['message'=>'Success','data'=>$order], 'Orders retrieved successfully.',200);
-
-   
-}
-
-
-public function getFilterDataForProviders(Request $request){
-    $providers = $this->orderService->getForProvider();
-    return $this->success(['data'=>$providers,'message'=> 'Orders for providers',],201);
-}
-
-
-
-
-
-public function changeStatus(Order $order,UpdateStatusRequest $request){
-   $status= $request->validated();
-    $this->orderService->changeStatusProvider($order, $status);
-}
+    public function index()
+    {
+        $order = $this->orderService->getOrdersProvider();
+        return $this->success(['message' => 'Success', 'data' => $order], 'Orders retrieved successfully.', 200);
+    }
+    public function getFilterDataForProviders(Request $request)
+    {
+        $providers = $this->orderService->getForProvider();
+        return $this->success(['data' => $providers, 'message' => 'Orders for providers',], 201);
+    }
+    public function changeStatus(Order $order, UpdateStatusRequest $request)
+    {
+        $status = $request->validated()['status'];
+        $this->orderService->changeStatusProvider($order, $status);
+    }
 }

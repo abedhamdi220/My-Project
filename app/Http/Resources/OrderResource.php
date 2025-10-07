@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use App\Http\Resources\PaymentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Validation\ValidatesWhenResolvedTrait;
 
 class OrderResource extends JsonResource
 {
@@ -26,6 +27,12 @@ class OrderResource extends JsonResource
             "updated_at" => $this->updated_at->format("Y-m-d H:i:s"),
 
             "rate"=>new ReviewResource($this->whenLoaded("review")),
+            "rating"=>$this->whenLoaded("review", function () {
+                return $this->review ? $this->review->rating : null;
+            }),
+            "comment"=>$this->whenLoaded("review", function () {
+                return $this->review ? $this->review->comment : null;
+            }),
            // "payment"=>PaymentResource($this->whenLoaded("payment")),
 
 

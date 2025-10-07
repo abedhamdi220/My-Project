@@ -10,15 +10,21 @@ use App\Http\Controllers\Client\ServiceController as ClientServiceController;
 use App\Http\Controllers\Provider\OrderController as ProviderOrderController;
 use App\Http\Controllers\Provider\ServiceController as ProviderServiceController;
 
-
-// Client
+// ==========================
+// CLIENT ROUTES
+// ==========================
 Route::prefix("client")->group(function () {
+
+    // Auth routes
     Route::post("register", [AuthController::class, "register"]);
     Route::post("login", [AuthController::class, "login"]);
 
     Route::middleware("auth:api")->group(function () {
+
+        // Profile
         Route::get("profile", [AuthController::class, "profile"]);
-        // Categories for Clients
+
+        // Categories
         Route::prefix("categories")->group(function () {
             Route::get("/", [CategoryController::class, "apiIndex"]);
         });
@@ -27,50 +33,53 @@ Route::prefix("client")->group(function () {
         Route::prefix("services")->group(function () {
             Route::get("/", [ClientServiceController::class, "index"]);
             Route::get("/{id}", [ClientServiceController::class, "show"]);
-            Route::get("/category/{categoryId}", [ClientServiceController::class, "byCategory"]);
-            Route::get("/provider/{providerId}", [ClientServiceController::class, "byProvider"]);
+            Route::get("category/{categoryId}", [ClientServiceController::class, "byCategory"]);
+            Route::get("provider/{providerId}", [ClientServiceController::class, "byProvider"]);
         });
-        Route::prefix("orders")->group(function () {
-            Route::post("/", [OrderController::class,"store"]);
-            Route::get("/", [OrderController::class,"index"]);
 
+        // Orders for Clients
+        Route::prefix("orders")->group(function () {
+            Route::post("/", [OrderController::class, "store"]);
+            Route::get("/", [OrderController::class, "index"]);
+            Route::post("rate/{order}", [OrderController::class, "rate"])->name("client.orders.rate");
         });
-          Route::prefix("favorites")->group(function () {
-            Route::get("/", [FavoriteController::class,"index"]);
-             Route::post("/", [FavoriteController::class,"store"]);
-              Route::delete("/{service_id}", [FavoriteController::class,"destroy"]);
+
+        // Favorites for Clients
+        Route::prefix("favorites")->group(function () {
+            Route::get("/", [FavoriteController::class, "index"]);
+            Route::post("/", [FavoriteController::class, "store"]);
+            Route::delete("/{service_id}", [FavoriteController::class, "destroy"]);
+        });
     });
 });
-});
 
-// Provider
+// ==========================
+// PROVIDER ROUTES
+// ==========================
 Route::prefix("provider")->group(function () {
+
+    // Auth routes
     Route::post("register", [ProviderAuthController::class, "register"]);
     Route::post("login", [ProviderAuthController::class, "login"]);
+
     Route::middleware("auth:api")->group(function () {
+
+        // Profile
         Route::get("profile", [ProviderAuthController::class, "profile"]);
 
-        // Categories for Providers
+        // Categories
         Route::prefix("categories")->group(function () {
             Route::get("/", [CategoryController::class, "apiIndex"]);
         });
-    
-            Route::apiResource('services', ProviderServiceController::class);
-        });
-        Route::prefix('orders')->group(function () {
-            Route::get('/', [OrderController::class,'index']);
-            Route::put('/change-status/{order}', [OrderController::class,'changeStatus']);
-        });
 
         // Services for Providers
-        // Route::prefix("services")->group(function () {
-        //      Route::post("/", [ProviderServiceController::class, "store"]);
-        //     Route::get("/", [ProvidrviceControlerSeler::class, "index"]);
-        //     Route::get("/{id}", [ProviderServiceController::class, "show"]);
-        //     Route::put("/{id}", [ProviderServiceController::class, "update"]);
-        //     Route::delete("/{id}", [ProviderServiceController::class, "destroy"]);
-        // });
+        Route::apiResource("services", ProviderServiceController::class);
+
+        // Orders for Providers
+        Route::prefix("orders")->group(function () {
+            Route::get("/", [ProviderOrderController::class, "index"]);
+            Route::put("change-status/{order}", [ProviderOrderController::class, "changeStatus"]);
+        });
     });
+});
 
-
-  
