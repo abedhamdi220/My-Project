@@ -40,11 +40,11 @@ class OrderController extends Controller
     $order = $this->orderService->createOrder(
       $data, $client_id
     );
-    $provider = $order->provider;
-    Notification::send(
-      $provider,
-      new NewOrderNotifications($order)
-    );
+    // $provider = $order->provider;
+    // Notification::send(
+    //   $provider,
+    //   new NewOrderNotifications($order)
+    // );
     return $this->success(
       new OrderResource($order
         ->load(["review", "client", "provider", "service"])),

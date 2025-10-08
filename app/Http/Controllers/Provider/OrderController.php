@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Provider;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Servicses\Provider\OrderService;
+
 class OrderController extends Controller
 {
     protected $orderService;
@@ -25,10 +27,22 @@ class OrderController extends Controller
     }
     public function changeStatus(Request $request, Order $order)
     {
+        $provider=Auth::user();
         $request->validate([
             'status' => 'required|string|in:completed,pending,approved,rejected,finiched'
         ]);
-        $order = $this->orderService->changeStatusProvider($order, $request->status);
+        $order = $this->orderService->changeStatusProvider($order, $request->status,$provider);
         return $this->success(['message' => 'Order status change successefully', 'data' => $order], 200);
+    }
+    public function getNotification(Order $order){
+       $provider= Auth::user();
+        $order = $this->orderService->getNotificationProvider($order,$provider);
+        return response()->json($order,200);
+
+    }
+    public function markAsRead(Order $order){
+       $provider= Auth::user();
+        $order = $this->orderService->MarkNotificationAsRead($provider);
+        return response()->json($order,200);
     }
 }

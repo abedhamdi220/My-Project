@@ -7,19 +7,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class StatusChangeNotifications extends Notification
+class StatusChangeNotifications extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    protected $newStatus;
+
     protected $order;
     protected $oldStatus;
-    public function __construct($order, $newStatus,$oldStatus)
+    protected $newStatus;
+    public function __construct($order, $oldStatus, $newStatus)
     {
-        //
+        $this->order = $order;
+        $this->oldStatus = $oldStatus;
+        $this->newStatus = $newStatus;
     }
 
     /**
@@ -49,19 +52,20 @@ class StatusChangeNotifications extends Notification
      * @return array<string, mixed>
      */
 
-      public function toDatabase(object $notifiable): array
+    public function toDatabase(object $notifiable): array
     {
         return [
-            "order_id"=>$this->order->id,
-            "status"=>$this->oldStatus,
-            "message"=>"your order status  {$this->order->id} has been changed to {$this->newStatus} "
-            
+            "order_id" => $this->order->id,
+            "oldstatus" => $this->oldStatus,
+            "newstatus" => $this->newStatus,
+            "message" => "your order   {$this->order->id}was {$this->oldStatus} has been changed to {$this->newStatus} "
+
         ];
     }
     // public function toArray(object $notifiable): array
     // {
     //     return [
-            
+
     //     ];
     // }
 }

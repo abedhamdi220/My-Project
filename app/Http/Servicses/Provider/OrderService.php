@@ -37,10 +37,14 @@ class OrderService
             return $query->paginate($perPage);
         }
     }
-    public function changeStatusProvider(Order $order, $status)
+    public function changeStatusProvider(Order $order, $status,$provider)
     {
-        $providerId = Auth::user()->id;
-        if ($order->provider_id !== $providerId) {
+      
+if (!$provider) {
+    throw new \Exception("Unauthorized: please log in as provider");
+}
+     
+        if ($order->provider_id !== $provider->id) {
             throw new \Exception("Unauthorized you dont own this order");
         }
         $oldStatus = $order->status;
@@ -48,7 +52,28 @@ class OrderService
          if ($order->client) {
                 $order->client->notify(new StatusChangeNotifications($order, $oldStatus, $newStatus));
 
-        return $order;
+       
     }
+     return $order;
+}
+public function getNotificationProvider(Order $order,$provider){
+    if (!$provider) {
+    throw new \Exception("Unauthorized: please log in as provider");
+}
+if ($order->provider_id !== $provider->provider_id) {
+    throw new \Exception("Unauthorized you dont own this order");
+}
+ return $provider->Notifications;
+
+}
+public function MarkNotificationAsRead($provider){
+    if (!$provider) {
+    throw new \Exception("Unauthorized: please log in as provider");
+}
+
+$Notification=$provider->Notifications()->findOrFail($provider->id)
+->markAsRead();
+ return $Notification;
+
 }
 }

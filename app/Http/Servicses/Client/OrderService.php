@@ -67,9 +67,7 @@ class OrderService
         $rating = $data['rating'] ?? null;
         $comment = $data['comment'] ?? null;
         $client_id = Auth::user()->id;
-
         $order->load(["review", 'provider']);
-        
         if ($order->client_id !==  $client_id) {
             throw new \Exception("error you can only rate your order");
         }

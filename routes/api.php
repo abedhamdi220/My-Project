@@ -79,7 +79,12 @@ Route::prefix("provider")->group(function () {
         Route::prefix("orders")->group(function () {
             Route::get("/", [ProviderOrderController::class, "index"]);
             Route::put("change-status/{order}", [ProviderOrderController::class, "changeStatus"]);
+
         });
+         Route::prefix("Notification")->group(function () {
+         Route::get("", [ProviderOrderController::class, "getNotification"]);
+          Route::post("{id}/read", [ProviderOrderController::class, "markAsRead"]);
+         });
     });
 });
 
