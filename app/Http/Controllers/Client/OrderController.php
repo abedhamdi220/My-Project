@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\OrderResource;
-use Illuminate\Auth\Events\Validated;
 use App\Http\Resources\ReviewResource;
 use App\Http\Requests\Global\ReviewRequest;
 use App\Http\Servicses\Client\OrderService;
 use App\Http\Requests\Global\StoreOrderRequest;
 use App\Http\Resources\OrderCollectionResource;
+use App\Notifications\NewOrderNotifications;
+use App\Notifications\OrderRatedNotifications;
+use Illuminate\Support\Facades\Notification;
 
 class OrderController extends Controller
 {
@@ -36,6 +38,8 @@ class OrderController extends Controller
     $data = $request->validated();
 
     $order = $this->orderService->createOrder(array_merge($data), $client_id);
+    $provider=$order->provider;
+    Notification::send($provider, new NewOrderNotifications($order));
     return $this->success(new OrderResource($order->load(["review", "client", "provider", "service"])), 'Order created successfully.', 201);
   }
 
@@ -61,7 +65,9 @@ class OrderController extends Controller
     try {
       $data = $request->validated();
       $this->orderService->rateOrder($order, $data);
-      return $this->success(new ReviewResource($data), "data reviwed succssefully", 200);
+   $providers=$order->provider;
+    Notification::send($providers, new OrderRatedNotifications($data));
+      return $this->success(new ReviewResource($data), "data reviwed succssefully", 201);
     } catch (\Exception $e) {
       return response()->json([
         'status' => false,

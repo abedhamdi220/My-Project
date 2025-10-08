@@ -7,4 +7,5 @@ enum StatusOrderEnum{
     const APPROVED = "approved";
     const REJECTED = "rejected";
      const COMPLETED = "completed";
+     const FINISHED = "finiched";
 }

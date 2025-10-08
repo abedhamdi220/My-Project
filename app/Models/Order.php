@@ -25,7 +25,7 @@ class Order extends Model
         return $this->belongsTo(User::class,"client_id");
     }
     public function review(){
-        return $this->hasOne(Review::class);
+        return $this->hasOne(Review::class,"order_id");
     }
    
    

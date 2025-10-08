@@ -10,7 +10,7 @@ class OrderService
 {
     public function getOrder($request)
 {
-    $orders = Order::with(['service', 'client', 'provider']);
+    $orders = Order::with(['service', 'client', 'provider','review']);
 
     // 🔹 البحث باسم الخدمة
     if ($request->filled('search_service')) {
@@ -53,10 +53,10 @@ class OrderService
     $orders->orderBy($sortField, $sortOrder);
 
     // 🔹 الإرجاع مع تقسيم الصفحات
-    return $orders->paginate(5);
+   return $orders->latest()->paginate(5);
 }
 
     public function showOrders(Order $order) {
-        return $order->load(['service','client','provider']);
+        return $order->load(['service','client','provider','review']);
     }
 }

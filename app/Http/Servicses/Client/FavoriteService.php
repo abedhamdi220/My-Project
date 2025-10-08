@@ -17,7 +17,7 @@ class FavoriteService
         $service =Service::where("id", $id)->where("status","active")->firstOrFail();
         $exists = Auth::user()->favorites()->where("user_id", $service->id)->exists();
         if($exists){
-            abort(409,"you have already this service in favorite list");
+            abort(409,message: "you have already this service in favorite list");
         }
         Auth::user()->favorites()->syncWithoutDetaching($service->id);
     }
