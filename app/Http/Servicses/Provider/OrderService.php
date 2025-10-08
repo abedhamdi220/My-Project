@@ -3,6 +3,7 @@
 namespace App\Http\Servicses\Provider;
 
 use App\Models\Order;
+use App\Notifications\StatusChangeNotifications;
 use Illuminate\Support\Facades\Auth;
 
 class OrderService
@@ -42,8 +43,12 @@ class OrderService
         if ($order->provider_id !== $providerId) {
             throw new \Exception("Unauthorized you dont own this order");
         }
-        $order->status = $status;
-        $order->save();
+        $oldStatus = $order->status;
+        $newStatus = $order->update(['status' => $status]);
+         if ($order->client) {
+                $order->client->notify(new StatusChangeNotifications($order, $oldStatus, $newStatus));
+
         return $order;
     }
+}
 }

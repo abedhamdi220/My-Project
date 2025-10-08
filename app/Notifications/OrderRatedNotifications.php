@@ -58,6 +58,9 @@ class OrderRatedNotifications extends Notification
            "order_id"=>$this->orderRated->id,
            "rating"=>$this->orderRated->rating,
            "comment"=>$this->orderRated->comment,
+           "message"=>"your order {$this->orderRated->id}
+            has been rated by client {$this->orderRated->rating}
+             stars .{$this->orderRated->client_notes}"
            
         ];
     }

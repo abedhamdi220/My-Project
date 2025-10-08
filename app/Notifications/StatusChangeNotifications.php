@@ -14,9 +14,10 @@ class StatusChangeNotifications extends Notification
     /**
      * Create a new notification instance.
      */
-    protected $status;
+    protected $newStatus;
     protected $order;
-    public function __construct($order, $status)
+    protected $oldStatus;
+    public function __construct($order, $newStatus,$oldStatus)
     {
         //
     }
@@ -52,8 +53,8 @@ class StatusChangeNotifications extends Notification
     {
         return [
             "order_id"=>$this->order->id,
-            "status"=>$this->status,
-            "message"=>"your order status changed to {$this->status}"
+            "status"=>$this->oldStatus,
+            "message"=>"your order status  {$this->order->id} has been changed to {$this->newStatus} "
             
         ];
     }

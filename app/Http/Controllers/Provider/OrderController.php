@@ -5,11 +5,7 @@ namespace App\Http\Controllers\Provider;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Notification;
 use App\Http\Servicses\Provider\OrderService;
-use App\Http\Requests\Provider\UpdateStatusRequest;
-use App\Notifications\StatusChangeNotifications;
-
 class OrderController extends Controller
 {
     protected $orderService;
@@ -27,18 +23,12 @@ class OrderController extends Controller
         $providers = $this->orderService->getForProvider();
         return $this->success(['data' => $providers, 'message' => 'Orders for providers',], 201);
     }
-    public function changeStatus(Order $order, UpdateStatusRequest $request)
+    public function changeStatus(Request $request, Order $order)
     {
-        try{
-        $status = $request->validated()['status'];
-        $order=$this->orderService->changeStatusProvider($order, $status);
-        $client= $order->client;
-         Notification::send($client, new StatusChangeNotifications($order, $status));
-         return $this->success(['message'=> 'Order status change successefully','data'=> $order],200);
-        }
-        catch(\Exception $e){
-            return response()->json(["status"=>false,'message'=> $e->getMessage()],500);
-
-        }
+        $request->validate([
+            'status' => 'required|string|in:completed,pending,approved,rejected,finiched'
+        ]);
+        $order = $this->orderService->changeStatusProvider($order, $request->status);
+        return $this->success(['message' => 'Order status change successefully', 'data' => $order], 200);
     }
 }

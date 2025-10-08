@@ -33,11 +33,15 @@ class ServiceController extends Controller
    
     public function updateStatus(Request $request, $id)
     {
-        $status = $request->input('status', 'inactive');
-        DB::transaction(function () use ($id, $status) {
-            $this->serviceService->updateStatus((int)$id, $status);
-        });
+      $request->validate([
+        'status' => 'required|string|in:pending,active,inactive'
+    ]);
 
+    try {
+        $this->serviceService->updateStatus((int)$id, $request->status);
         return redirect()->back()->with('success', 'Service status updated.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Failed to update status: ' . $e->getMessage());
     }
+}
 }

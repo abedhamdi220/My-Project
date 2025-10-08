@@ -58,9 +58,10 @@ class NewOrderNotifications extends Notification
             'order_id'=> $this->order->id,
             "notes"=>$this->order->notes ?? null,
             "provider_id"=>$this->order->provider_id,
-            "service_id"=>$this->order->service_id,
+            "service_name"=>$this->order->service->name,
             "client_id"=>$this->order->client_id,
             "status"=>$this->order->status,
+            "message"=>"your service has been ordered by client {$this->order->client->name}"
 
         ];
     }
