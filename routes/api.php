@@ -50,6 +50,10 @@ Route::prefix("client")->group(function () {
             Route::post("/", [FavoriteController::class, "store"]);
             Route::delete("/{service_id}", [FavoriteController::class, "destroy"]);
         });
+          Route::prefix("Notification")->group(function () {
+         Route::get("", [OrderController::class, "getNotifications"]);
+          Route::post("{notification}/read", [OrderController::class, "markAsRead"]);
+         });
     });
 });
 
@@ -82,8 +86,8 @@ Route::prefix("provider")->group(function () {
 
         });
          Route::prefix("Notification")->group(function () {
-         Route::get("", [ProviderOrderController::class, "getNotification"]);
-          Route::post("{id}/read", [ProviderOrderController::class, "markAsRead"]);
+         Route::get("", [ProviderOrderController::class, "getNotifications"]);
+          Route::post("{notification}/read", [ProviderOrderController::class, "markAsRead"]);
          });
     });
 });

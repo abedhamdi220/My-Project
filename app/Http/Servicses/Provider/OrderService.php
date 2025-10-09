@@ -56,23 +56,21 @@ if (!$provider) {
     }
      return $order;
 }
-public function getNotificationProvider(Order $order,$provider){
-    if (!$provider) {
-    throw new \Exception("Unauthorized: please log in as provider");
-}
-if ($order->provider_id !== $provider->provider_id) {
-    throw new \Exception("Unauthorized you dont own this order");
-}
- return $provider->Notifications;
-
-}
-public function MarkNotificationAsRead($provider){
+public function getNotificationProvider($provider){
     if (!$provider) {
     throw new \Exception("Unauthorized: please log in as provider");
 }
 
-$Notification=$provider->Notifications()->findOrFail($provider->id)
-->markAsRead();
+ return $provider->notifications()->orderBy('created_at', 'desc')->get();
+
+}
+public function markNotificationAsRead($provider,$notificationId){
+    if (!$provider) {
+    throw new \Exception("Unauthorized: please log in as provider");
+}
+
+$Notification=$provider->Notifications()->findOrFail($notificationId);
+$Notification->markAsRead();
  return $Notification;
 
 }
