@@ -99,15 +99,5 @@ class OrderController extends Controller
       ], 400);
     }
   }
-   public function getNotifications(){
-       $client= Auth::user();
-        $notifications = $this->orderService->getNotificationProvider($client);
-        return response()->json(["message"=>'your Notifications','Notifications'=>$notifications],200);
-
-    }
-    public function markAsRead($notificationId){
-       $client= Auth::user();
-        $notification  = $this->orderService->markNotificationAsRead($client, $notificationId);
-        return response()->json(["message"=>'notification marked as read','Notification'=>$notification],200);
-    }
+  
 }

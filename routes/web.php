@@ -29,12 +29,12 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
     });
 
-   
-    Route::prefix('notifications')->name('notifications.')->group(function () {
-        Route::get('/', [NotificationController::class, 'index'])->name('index');
-        Route::get('/unread-count', [NotificationController::class, 'unreadCount'])->name('unread-count');
-        Route::patch('/mark-as-read', [NotificationController::class, 'readCount'])->name('mark-as-read');
-    });
+   Route::prefix('notifications')->name('notifications.')->group(function () {
+    Route::get('/', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unreadCount');
+    Route::post('/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllRead'); // أضف هذا السطر
+    Route::post('/{id}/mark-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+});
 
 
 Route::prefix('orders')->name('orders.')->group(function () {

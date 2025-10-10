@@ -15,19 +15,29 @@ class NotificationController extends Controller
 
     }
     public function index(Request $request){
-       $this->notificationService->listNotifications($request->user());
-        return view("", compact("notifications"));
+       $notifications=$this->notificationService->listNotifications($request->user());
+        return view("admin.notifications.index", compact("notifications"));
     }
     public function unreadCount(Request $request){
-        $this->notificationService->getUnreadCount($request->user());
+       $count= $this->notificationService->getUnreadCount($request->user());
      
-        return view("", compact("count"));
+           return response()->json(['count' => $count]);
 
     }
     public function readCount(Request $request){
-        $this->notificationService->markAllAsread($request->user());
+        $this->notificationService->markAllAsRead($request->user());
         
-        return view("", compact("marker"));
+       return response()->json(['success' => true]);;
     }
+    public function markAsRead(Request $request, $id)
+{
+    $notification = $request->user()->notifications()->where('id', $id)->first();
+    
+    if ($notification) {
+        $notification->markAsRead();
+    }
+    
+    return redirect()->back()->with('success', 'Notification markedasread.');
+}
 
 }

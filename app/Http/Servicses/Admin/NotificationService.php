@@ -6,7 +6,7 @@ use App\Models\User;
 
 class NotificationService {
       public function listNotifications(User $user){
-        return $user->notifications()->paginate(10);
+        return $user->notifications()->latest()->paginate(10);
         
     }
     public function getUnreadCount(User $user){
@@ -14,8 +14,8 @@ class NotificationService {
        
 
     }
-    public function markAllAsread(User $user){
-         return $user->unreadNotifications()->markAsRead();
+    public function markAllAsRead(User $user){
+         return $user->unreadNotifications()->update(['read-at'=>now()]);
        
     }
 }

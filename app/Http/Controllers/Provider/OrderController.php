@@ -34,15 +34,5 @@ class OrderController extends Controller
         $order = $this->orderService->changeStatusProvider($order, $request->status,$provider);
         return $this->success(['message' => 'Order status change successefully', 'data' => $order], 200);
     }
-    public function getNotifications(){
-       $provider= Auth::user();
-        $order = $this->orderService->getNotificationProvider($provider);
-        return response()->json($order,200);
-
-    }
-    public function markAsRead($notificationId){
-       $provider= Auth::user();
-        $notification  = $this->orderService->markNotificationAsRead($provider, $notificationId);
-        return response()->json(["message"=>'notification marked as read','Notification'=>$notification],200);
-    }
+ 
 }

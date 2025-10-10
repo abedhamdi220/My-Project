@@ -4,15 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\AuthController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\FavoriteController;
+use App\Http\Controllers\Client\NotificationController;
 use App\Http\Controllers\Global\CategoryController;
 use App\Http\Controllers\Provider\AuthController as ProviderAuthController;
 use App\Http\Controllers\Client\ServiceController as ClientServiceController;
+use App\Http\Controllers\Provider\NotificationController as ProviderNotificationController;
 use App\Http\Controllers\Provider\OrderController as ProviderOrderController;
 use App\Http\Controllers\Provider\ServiceController as ProviderServiceController;
 
-// ==========================
+
 // CLIENT ROUTES
-// ==========================
+
 Route::prefix("client")->group(function () {
 
     // Auth routes
@@ -51,15 +53,15 @@ Route::prefix("client")->group(function () {
             Route::delete("/{service_id}", [FavoriteController::class, "destroy"]);
         });
           Route::prefix("Notification")->group(function () {
-         Route::get("", [OrderController::class, "getNotifications"]);
-          Route::post("{notification}/read", [OrderController::class, "markAsRead"]);
+         Route::get("", [NotificationController::class, "getNotifications"]);
+          Route::post("{notification}/read", [NotificationController::class, "markAsRead"]);
          });
     });
 });
 
-// ==========================
+
 // PROVIDER ROUTES
-// ==========================
+
 Route::prefix("provider")->group(function () {
 
     // Auth routes
@@ -86,8 +88,8 @@ Route::prefix("provider")->group(function () {
 
         });
          Route::prefix("Notification")->group(function () {
-         Route::get("", [ProviderOrderController::class, "getNotifications"]);
-          Route::post("{notification}/read", [ProviderOrderController::class, "markAsRead"]);
+         Route::get("", [ProviderNotificationController::class, "getNotifications"]);
+          Route::post("{notification}/read", [ProviderNotificationController::class, "markAsRead"]);
          });
     });
 });
