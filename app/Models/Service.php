@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
@@ -35,4 +36,7 @@ class Service extends Model
     {
         return $query->where('status', 'active');
     }
+    public function media(){
+    return $this->morphMany(Media::class,"mediable");
+}
 }

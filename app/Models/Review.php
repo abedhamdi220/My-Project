@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
@@ -13,7 +14,9 @@ public function user(){
     
 public function order(){
     return $this->belongsTo(Order::class);
-
+}
+public function media(){
+    return $this->morphMany(Media::class,"mediable");
 }
 }
 

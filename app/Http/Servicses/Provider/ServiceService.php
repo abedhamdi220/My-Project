@@ -2,9 +2,10 @@
 
 namespace App\Http\Servicses\Provider;
 
+use Storage;
 use App\Models\Service;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Collection;
 
 class ServiceService
 {
@@ -37,19 +38,38 @@ class ServiceService
      * @param array $data
      * @return Service
      */
-    public function createService(array $data): Service
+    public function getIndex($provider)
     {
 
-       return Service::create($data);
+        return $provider->services()->with('media', 'category')->latest()->paginate(10);
+    }
+    public function createService(array $data, $provider) {
+        $service=$provider->services()->create($data);
+        if(isset($data['image'])) {
+            $file= $data['image'];
+            $path= $file->store('services','public');
+            $service->media()->create([
+                'file_name'=> $file->getClientOriginalName(),
+                'file_path'=> $path,
+                'mime_type'=> $file->getMimeType(),
+            ]);
+        }
+        return $service;
     }
 
     /**
      * Update existing service
      */
-    public function updateService(int $id, array $data, int $providerId): Service
+    public function updateService( Service $service,array $data): Service
     {
-        $service = $this->findByIdForProvider($id, $providerId);
-        $service->update($data);
+     $service->update($data);
+        if(isset($data['image'])) {
+            if($service->media()->exist()) {
+              //  \Storage::disk('public')->delete($service->media()->first()->file_path);
+            }
+
+        }
+
         return $service;
     }
 

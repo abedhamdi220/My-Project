@@ -13,7 +13,7 @@ class ServiceStoreRequest extends FormRequest
     public function authorize(): bool
     {
         // Allow only authenticated users (providers). You can add role checks here.
-        return Auth::check();
+        return Auth::check() ;
     }
 
     /**
@@ -28,7 +28,8 @@ class ServiceStoreRequest extends FormRequest
             'description' => ['nullable','string'],
             'price' => ['nullable','numeric','min:0'],
             'category_id' => ['required','integer','exists:categories,id'],
-            'status' => ['nullable','in:active,inactive']
+            'status' => ['nullable','in:active,inactive'],
+            'image'=> ['nullable','image','mimes:png,jpg,jpeg','max:2048'],
         ];
     }
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Global\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 // Authentication Routes
@@ -28,12 +29,12 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
     });
 
-    // Service Management Routes for Admin
-    // Route::prefix('services')->name('services.')->group(function () {
-    //     Route::get('/', [ServiceController::class, 'index'])->name('index');
-    //     Route::get('/{id}', [ServiceController::class, 'show'])->name('show');
-    //     Route::patch('/{id}/status', [ServiceController::class, 'updateStatus'])->name('update-status');
-    // });
+   
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::get('/unread-count', [NotificationController::class, 'unreadCount'])->name('unread-count');
+        Route::patch('/mark-as-read', [NotificationController::class, 'readCount'])->name('mark-as-read');
+    });
 
 
 Route::prefix('orders')->name('orders.')->group(function () {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Provider;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Provider\ServiceStoreRequest;
+use App\Http\Requests\ServiceUpdateRequest;
 use App\Http\Resources\ServiceResource;
 use App\Http\Servicses\Provider\ServiceService;
 use Illuminate\Http\Request;
@@ -19,27 +20,22 @@ class ServiceController extends Controller
         $this->serviceService = $serviceService;
     }
 
- 
+
     public function index(Request $request)
     {
-        $providerId = Auth::id();
-        $services = $this->serviceService->getMyServicesList($providerId);
+        $provider = Auth::id();
+        $services = $this->serviceService->getIndex($provider);
         return $this->success(['data' => ServiceResource::collection($services)], 'Services retrieved successfully.');
     }
 
-   
+
     public function store(ServiceStoreRequest $request)
     {
-    $providerId = Auth::id();
-        $data = array_merge($request->validated(), ['provider_id' => $providerId]);
-
-        $service = DB::transaction(function () use ($data) {
-            return $this->serviceService->createService($data);
-        });
-
+        $provider = Auth::user();
+        $service = $this->serviceService->createService( $request->validated(),$provider);
         return $this->success(new ServiceResource($service), 'Service created successfully.', 201);
     }
-    
+
     public function show($id)
     {
         $providerId = Auth::id();
@@ -47,23 +43,18 @@ class ServiceController extends Controller
         return $this->success(new ServiceResource($service), 'Service retrieved successfully.');
     }
 
-   
-    public function update(ServiceStoreRequest $request, $id)
+
+    public function update(ServiceUpdateRequest $request, $id)
     {
-  $providerId = Auth::id();
-        $service = null;
+        
 
-        DB::transaction(function () use (&$service, $id, $request, $providerId) {
-            $service = $this->serviceService->updateService((int)$id, $request->validated(), $providerId);
-        });
-
-        return $this->success(new ServiceResource($service), 'Service updated successfully.');
+        //return $this->success(new ServiceResource(), 'Service updated successfully.');
     }
 
-    
+
     public function destroy($id)
     {
-    $providerId = Auth::id();
+        $providerId = Auth::id();
 
         DB::transaction(function () use ($id, $providerId) {
             $this->serviceService->deleteService((int)$id, $providerId);
@@ -71,5 +62,4 @@ class ServiceController extends Controller
 
         return $this->success(null, 'Service deleted successfully.');
     }
-
 }

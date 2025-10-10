@@ -12,7 +12,7 @@ class OrderService
 {
     $orders = Order::with(['service', 'client', 'provider','review']);
 
-    // 🔹 البحث باسم الخدمة
+   
     if ($request->filled('search_service')) {
         $search_service = $request->input('search_service');
         $orders->whereHas('service', function ($q) use ($search_service) {
@@ -20,7 +20,7 @@ class OrderService
         });
     }
 
-    // 🔹 البحث باسم العميل
+    
     if ($request->filled('search_client')) {
         $search_client = $request->input('search_client');
         $orders->whereHas('client', function ($q) use ($search_client) {
@@ -28,7 +28,7 @@ class OrderService
         });
     }
 
-    // 🔹 البحث باسم المزوّد
+    
     if ($request->filled('search_provider')) {
         $search_provider = $request->input('search_provider');
         $orders->whereHas('provider', function ($q) use ($search_provider) {
@@ -36,12 +36,12 @@ class OrderService
         });
     }
 
-    // 🔹 الفلترة بالحالة
+   
     if ($request->filled("status")) {
         $orders->where("status", $request->input("status"));
     }
 
-    // 🔹 الترتيب (الفرز)
+    
     $sortField = $request->input("sort_by", 'id');
     $sortOrder = $request->input('sort_order', 'desc');
     $allowedSorts = ['id', 'price', 'created_at'];
@@ -52,7 +52,7 @@ class OrderService
 
     $orders->orderBy($sortField, $sortOrder);
 
-    // 🔹 الإرجاع مع تقسيم الصفحات
+    
    return $orders->latest()->paginate(5);
 }
 
