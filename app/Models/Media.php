@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Media extends Model
 {
@@ -11,8 +12,12 @@ class Media extends Model
     {
         return $this->morphTo();
     }
-    public function getFullurlAttribute()
+    public function getFileUrlAttribute()
     {
         return asset('storage/' . $this->file_path);
     }
+    // public function getUrlAttribute(){
+    //     return Storage::disk('public')->url($this->file_path);
+
+    // }
 }

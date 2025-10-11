@@ -43,7 +43,7 @@ class ServiceResource extends JsonResource
             'created_at' => optional($this->created_at)->toDateTimeString(),
             'updated_at' => optional($this->updated_at)->toDateTimeString(),
 
-            
+            'media'=>MediaResource::collection($this->whenLoaded('media')),
         ];
     }
 }
