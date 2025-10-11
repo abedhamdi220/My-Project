@@ -54,6 +54,7 @@ Route::prefix("client")->group(function () {
         });
           Route::prefix("Notification")->group(function () {
          Route::get("", [NotificationController::class, "getNotifications"]);
+         Route::post("/unread-count", [ProviderNotificationController::class," getUnreadCount"]);
           Route::post("{notification}/read", [NotificationController::class, "markAsRead"]);
          });
     });
@@ -87,8 +88,10 @@ Route::prefix("provider")->group(function () {
             Route::put("change-status/{order}", [ProviderOrderController::class, "changeStatus"]);
 
         });
+       
          Route::prefix("Notification")->group(function () {
          Route::get("", [ProviderNotificationController::class, "getNotifications"]);
+         Route::post("/unread-count", [ProviderNotificationController::class," getUnreadCount"]);
           Route::post("{notification}/read", [ProviderNotificationController::class, "markAsRead"]);
          });
     });

@@ -22,4 +22,13 @@ class NotificationController extends Controller
         $notification  = $this->notificationService->markNotificationAsRead($provider, $notificationId);
         return response()->json(["message"=>'notification marked as read','Notification'=>$notification],200);
     }
+     public function getUnreadCount(){
+        $provider = Auth::user();
+        $count= $this->notificationService->getUnreadCount($provider);
+        return response()->json([
+            'message'=> 'Unread notifications count',
+            'count'=> $count],
+            200);
+
+    }
 }

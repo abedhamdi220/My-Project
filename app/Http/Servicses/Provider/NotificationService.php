@@ -9,6 +9,13 @@ public function getNotificationProvider($provider){
  return $provider->notifications()->orderBy('created_at', 'desc')->get();
 
 }
+ public function getUnreadCount($provider)
+    {
+        if (!$provider) {
+            throw new \Exception("Unauthorized: please log in as provider");
+        }
+        return $provider->unreadNotifications()->count();
+    }
 public function markNotificationAsRead($provider,$notificationId){
     if (!$provider) {
     throw new \Exception("Unauthorized: please log in as provider");
@@ -19,4 +26,5 @@ $Notification->markAsRead();
  return $Notification;
 
 }
+
 }

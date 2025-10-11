@@ -20,6 +20,7 @@ class ServiceResource extends JsonResource
             'description' => $this->when($this->description !== null, $this->description),
             'price' => $this->when($this->price !== null, $this->price),
             'status' => $this->when(isset($this->status), $this->status),
+            'image'=>$this->image_url,
             'provider' => $this->whenLoaded('provider', function () {
                 if ($this->provider) {
                     return [
@@ -41,6 +42,8 @@ class ServiceResource extends JsonResource
             }),
             'created_at' => optional($this->created_at)->toDateTimeString(),
             'updated_at' => optional($this->updated_at)->toDateTimeString(),
+
+            
         ];
     }
 }

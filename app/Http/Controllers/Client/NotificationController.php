@@ -14,10 +14,11 @@ class NotificationController extends Controller
     {
         $this->notificationService = $notificationService;
     }
-    public function getNotifications()
+    public function getNotifications(Request $request)
     {
         $client = Auth::user();
-        $notifications = $this->notificationService->getNotificationClient($client);
+        $perPage=$request->get("per_page",10);
+        $notifications = $this->notificationService->getNotificationClient($client,$perPage);
         return response()->json(["message" => 'your Notifications', 'Notifications' => $notifications], 200);
     }
     public function markAsRead($notificationId)
@@ -25,5 +26,14 @@ class NotificationController extends Controller
         $client = Auth::user();
         $notification  = $this->notificationService->markNotificationAsRead($client, $notificationId);
         return response()->json(["message" => 'notification marked as read', 'Notification' => $notification], 200);
+    }
+    public function getUnreadCount(){
+        $client = Auth::user();
+        $count= $this->notificationService->getUnreadCount($client);
+        return response()->json([
+            'message'=> 'Unread notifications count',
+            'count'=> $count],
+            200);
+
     }
 }
